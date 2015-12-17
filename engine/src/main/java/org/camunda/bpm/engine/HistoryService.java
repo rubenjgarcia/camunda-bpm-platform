@@ -14,6 +14,8 @@
 
 package org.camunda.bpm.engine;
 
+import java.util.List;
+
 import org.camunda.bpm.engine.authorization.Permissions;
 import org.camunda.bpm.engine.authorization.Resources;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
@@ -45,6 +47,8 @@ import org.camunda.bpm.engine.history.NativeHistoricProcessInstanceQuery;
 import org.camunda.bpm.engine.history.NativeHistoricTaskInstanceQuery;
 import org.camunda.bpm.engine.history.UserOperationLogEntry;
 import org.camunda.bpm.engine.history.UserOperationLogQuery;
+import org.camunda.bpm.engine.history.report.DurationReportResult;
+import org.camunda.bpm.engine.history.report.HistoricProcessInstanceReport;
 
 /**
  * Service exposing information about ongoing and past process instances.  This is different
@@ -196,5 +200,13 @@ public interface HistoryService {
    * @since 7.3
    */
   String getHistoricJobLogExceptionStacktrace(String historicJobLogId);
+
+  /**
+   *
+   * @return
+   *
+   * @since 7.5
+   */
+  HistoricProcessInstanceReport createHistoricProcessInstanceReport();
 
 }

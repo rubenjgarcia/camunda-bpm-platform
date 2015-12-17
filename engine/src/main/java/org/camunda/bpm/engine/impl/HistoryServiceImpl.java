@@ -33,6 +33,7 @@ import org.camunda.bpm.engine.history.NativeHistoricDecisionInstanceQuery;
 import org.camunda.bpm.engine.history.NativeHistoricProcessInstanceQuery;
 import org.camunda.bpm.engine.history.NativeHistoricTaskInstanceQuery;
 import org.camunda.bpm.engine.history.UserOperationLogQuery;
+import org.camunda.bpm.engine.history.report.HistoricProcessInstanceReport;
 import org.camunda.bpm.engine.impl.cmd.DeleteHistoricCaseInstanceCmd;
 import org.camunda.bpm.engine.impl.cmd.DeleteHistoricProcessInstanceCmd;
 import org.camunda.bpm.engine.impl.cmd.DeleteHistoricTaskInstanceCmd;
@@ -141,6 +142,10 @@ public class HistoryServiceImpl extends ServiceImpl implements HistoryService {
 
   public String getHistoricJobLogExceptionStacktrace(String historicJobLogId) {
     return commandExecutor.execute(new GetHistoricJobLogExceptionStacktraceCmd(historicJobLogId));
+  }
+
+  public HistoricProcessInstanceReport createHistoricProcessInstanceReport() {
+    return new HistoricProcessInstanceReportImpl(commandExecutor);
   }
 
 }

@@ -13,17 +13,24 @@
 package org.camunda.bpm.engine.rest.impl.history;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.apache.ibatis.annotations.Results;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricProcessInstance;
 import org.camunda.bpm.engine.history.HistoricProcessInstanceQuery;
+import org.camunda.bpm.engine.history.report.HistoricProcessInstanceReport;
+import org.camunda.bpm.engine.history.report.ReportResult;
 import org.camunda.bpm.engine.rest.dto.CountResultDto;
 import org.camunda.bpm.engine.rest.dto.history.HistoricProcessInstanceDto;
 import org.camunda.bpm.engine.rest.dto.history.HistoricProcessInstanceQueryDto;
+import org.camunda.bpm.engine.rest.dto.history.report.HistoricProcessInstanceReportDto;
+import org.camunda.bpm.engine.rest.dto.history.report.ReportResultDto;
 import org.camunda.bpm.engine.rest.history.HistoricProcessInstanceRestService;
 import org.camunda.bpm.engine.rest.sub.history.HistoricProcessInstanceResource;
 import org.camunda.bpm.engine.rest.sub.history.impl.HistoricProcessInstanceResourceImpl;
 
 import javax.ws.rs.core.UriInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,6 +99,19 @@ public class HistoricProcessInstanceRestServiceImpl implements HistoricProcessIn
     long count = query.count();
     CountResultDto result = new CountResultDto();
     result.setCount(count);
+
+    return result;
+  }
+
+  @Override
+  public List<ReportResultDto> getHistoricProcessInstancesReport(UriInfo uriInfo) {
+    HistoricProcessInstanceReportDto reportDto = new HistoricProcessInstanceReportDto(objectMapper, uriInfo.getQueryParameters());
+    List<ReportResult> reports = reportDto.executeReport(processEngine);
+
+    List<ReportResultDto> result = new ArrayList<ReportResultDto>();
+    for (ReportResult report : reports) {
+      result.add(ReportResultDto.fromReportResult(report));
+    }
 
     return result;
   }

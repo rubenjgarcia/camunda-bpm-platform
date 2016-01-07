@@ -201,6 +201,7 @@ import org.camunda.bpm.engine.impl.persistence.entity.HistoricDetailManager;
 import org.camunda.bpm.engine.impl.persistence.entity.HistoricIncidentManager;
 import org.camunda.bpm.engine.impl.persistence.entity.HistoricJobLogManager;
 import org.camunda.bpm.engine.impl.persistence.entity.HistoricProcessInstanceManager;
+import org.camunda.bpm.engine.impl.persistence.entity.ReportManager;
 import org.camunda.bpm.engine.impl.persistence.entity.HistoricStatisticsManager;
 import org.camunda.bpm.engine.impl.persistence.entity.HistoricTaskInstanceManager;
 import org.camunda.bpm.engine.impl.persistence.entity.HistoricVariableInstanceManager;
@@ -803,6 +804,8 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     databaseTypeMappings.setProperty("DB2/SUN64","db2");
     databaseTypeMappings.setProperty("DB2/PTX","db2");
     databaseTypeMappings.setProperty("DB2/2","db2");
+    // note that the database product name of mariaDB is 'MySQL'
+    // so the databaseType have to set to 'mariadb' explicit in configuration
     return databaseTypeMappings;
   }
 
@@ -865,6 +868,10 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
           properties.put("bitand1" , DbSqlSessionFactory.databaseSpecificBitAnd1.get(databaseType));
           properties.put("bitand2" , DbSqlSessionFactory.databaseSpecificBitAnd2.get(databaseType));
           properties.put("bitand3" , DbSqlSessionFactory.databaseSpecificBitAnd3.get(databaseType));
+
+          properties.put("datepart1" , DbSqlSessionFactory.databaseSpecificDatepart1.get(databaseType));
+          properties.put("datepart2" , DbSqlSessionFactory.databaseSpecificDatepart2.get(databaseType));
+          properties.put("datepart3" , DbSqlSessionFactory.databaseSpecificDatepart3.get(databaseType));
 
           properties.put("trueConstant", DbSqlSessionFactory.databaseSpecificTrueConstant.get(databaseType));
           properties.put("falseConstant", DbSqlSessionFactory.databaseSpecificFalseConstant.get(databaseType));
@@ -948,6 +955,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
       addSessionFactory(new GenericManagerFactory(FilterManager.class));
       addSessionFactory(new GenericManagerFactory(MeterLogManager.class));
       addSessionFactory(new GenericManagerFactory(ExternalTaskManager.class));
+      addSessionFactory(new GenericManagerFactory(ReportManager.class));
 
       addSessionFactory(new GenericManagerFactory(CaseDefinitionManager.class));
       addSessionFactory(new GenericManagerFactory(CaseExecutionManager.class));
